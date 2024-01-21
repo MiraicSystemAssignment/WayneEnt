@@ -7,7 +7,7 @@ function App() {
     <Router>
     <Routes>
       <Route path="/" Component={mainLayout}>
-        <Route index path="/create" Component={NewClub}/>
+        <Route index path="/new" Component={NewClub}/>
       </Route>
     </Routes>
     </Router>
