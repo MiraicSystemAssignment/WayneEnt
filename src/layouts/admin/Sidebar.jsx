@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const styles = {
     Sidebar: {
-        height: "100vh",
+        minHeight: "100vh",
         width: "13%",
         backgroundColor: "black",
         color: "white",
