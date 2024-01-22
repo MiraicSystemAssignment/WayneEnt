@@ -48,7 +48,7 @@
 }
 
 
-input {
+.input {
     width: calc(100% - 0px);
     padding: 12px;
     font-size: 1rem;

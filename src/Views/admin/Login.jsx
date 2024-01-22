@@ -32,6 +32,7 @@ const Login = () => {
         <div className="input-group">
           <FontAwesomeIcon icon={faUser} className="icon" />
           <input
+            className='input'
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
@@ -42,7 +43,8 @@ const Login = () => {
 
         <div className="input-group">
           <FontAwesomeIcon icon={faLock} className="icon" />
-          <input
+          <input 
+            className='input'
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
