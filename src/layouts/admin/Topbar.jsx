@@ -3,7 +3,7 @@ import bat_white from "../../../public/bat_white.png";
 
 const styles = {
     Header: {
-        height: "10vh",
+        height: "30vh",
         width: "100%",
         color: "white",
         backgroundColor: "black",

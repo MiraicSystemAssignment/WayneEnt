@@ -10,6 +10,7 @@ function App() {
         <Route index path="/new" Component={NewClub}/>
       </Route>
     </Routes>
+    <Route exact path="/clubs" Component={Clubs} />
     </Router>
   )
 }
