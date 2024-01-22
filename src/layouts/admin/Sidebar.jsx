@@ -50,7 +50,7 @@ export default function Sidebar(){
     return (
         <div style={styles.Sidebar}>
             <div style={selected==="/" ? styles.SelectedItem : styles.Item}>
-                <Link style={selected==="/" ? styles.SelectedLink : styles.Link} to="/new">New Club</Link>
+                <Link style={selected==="/" ? styles.SelectedLink : styles.Link} to="/home/new">New Club</Link>
             </div>
             <div style={styles.Divider}></div>
             <div style={styles.Item}>
