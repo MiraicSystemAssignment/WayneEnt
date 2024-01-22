@@ -34,6 +34,10 @@ const styles = {
     backgroundColor: "black",
     borderRadius: "0.2em",
   },
+  RangeInput: {
+    width: "38%",
+    margin: "0.35rem 0.5rem 0.35rem 0.5rem",
+  },
 };
 export default function () {
   const [selectedType, setSelectedType] = useState("");
@@ -86,9 +90,10 @@ export default function () {
               >
                 <option></option>
                 {!form.find((item) => item.type === "form name") && (
-                  <option value="form name">Form Name</option>
+                  <option value="form name">Club Name</option>
                 )}
                 <option value="text">Text</option>
+                <option value="email">Email</option>
                 <option value="date">Date</option>
                 <option value="date range">Date Range</option>
                 <option value="checkbox">Check Box</option>
@@ -129,16 +134,64 @@ export default function () {
       </div>
       <div style={styles.Form}>
         <h2>Preview</h2>
-        {form.map((item) =>
-          item.type === "form name" ? (
-            <div key={item.name}>
-              <h2>{item.name}</h2>
-            </div>
-          ) : null
-        )}
-        <button style={styles.Buttons} onClick={handleCreate}>
-          Create
-        </button>
+        <div>
+          {form.map((item) =>
+            item.type === "form name" ? (
+              <div key={item.name}>
+                <h2>{item.name}</h2>
+              </div>
+            ) : item.type === "checkbox" ||
+              item.type === "radio" ||
+              item.type === "select" ||
+              item.type === "date range" ? (
+              item.type === "select" ? (
+                <div key={item.name} style={styles.Box}>
+                  <div>{item.name}</div>
+                  <div style={styles.SelectWrapper}>
+                    <select style={styles.Select}>
+                      <option key="0"></option>
+                      {item.options.map((item) => (
+                        <option key={item}>{item}</option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+              ) : item.type === "checkbox" ? (
+                <div key={item.name} style={styles.Box}>
+                  <div>{item.name}</div>
+                  {item.options.map((option) => (
+                    <div key={option}>
+                      <input type="checkbox" name={option} id={option} />
+                      <label> {option}</label>
+                    </div>
+                  ))}
+                </div>
+              ) : item.type === "date range" ? (
+                <div style={styles.Box}>
+                  <div>{item.name}</div>
+                  <div>
+                    Start:
+                    <input style={styles.RangeInput} type="date" />
+                    End:
+                    <input style={styles.RangeInput} type="date" />
+                  </div>
+                </div>
+              ) : (
+                item.type === "radio" && <div></div>
+              )
+            ) : (
+              <div key={item.name} style={styles.Box}>
+                <div>{item.name}</div>
+                <div style={styles.InputWrapper}>
+                  <input style={styles.Input} type={item.type} />
+                </div>
+              </div>
+            )
+          )}
+          <button style={styles.Buttons} onClick={handleCreate}>
+            Create
+          </button>
+        </div>
       </div>
     </>
   );

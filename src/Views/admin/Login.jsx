@@ -26,7 +26,7 @@ const Login = () => {
   return (
     <div className='body'>
       <div className="auth-container">
-      <img src="/company-logo1.png" alt="Company Logo" className="company-logo" />
+      <img src="/bat_black.png" alt="Company Logo" className="company-logo" />
       <h2 className="heading">Login </h2>
       <form onSubmit={submitForm}>
         <div className="input-group">
