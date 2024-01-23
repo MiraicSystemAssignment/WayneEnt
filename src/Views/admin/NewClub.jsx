@@ -119,6 +119,7 @@ export default function () {
                 <option value="checkbox">Check Box</option>
                 <option value="Radio">Radio Buttons</option>
                 <option value="select">Drop down</option>
+                <option value="number">Number</option>
               </select>
             </div>
           </div>
