@@ -45,23 +45,43 @@ export default function () {
   const [form, setForm] = useState([]);
   const [options, setOptions] = useState([]);
   const [optionName, setOptionName] = useState("");
+  const [required, setRequired] = useState(false);
 
   const handleAdd = () => {
-    selectedType === "Radio" ||
-    selectedType === "checkbox" ||
-    selectedType === "select"
-      ? setForm([
-          ...form,
-          { name: attributeName, type: selectedType, options: options },
-        ])
-      : setForm([...form, { name: attributeName, type: selectedType }]);
-    setAttributeName("");
-    setSelectedType("");
-    setOptions([]);
+    if (attributeName !== "" && selectedType !== "") {
+      selectedType === "Radio" ||
+      selectedType === "checkbox" ||
+      selectedType === "select"
+        ? options.length !== 0
+          ? (setForm([
+              ...form,
+              {
+                name: attributeName,
+                type: selectedType,
+                options: options,
+                required: required,
+              },
+            ]),
+            setAttributeName(""),
+            setSelectedType(""),
+            setOptions([]),
+            setRequired(false))
+          : alert("Options can't be empty")
+        : (setForm([
+            ...form,
+            { name: attributeName, type: selectedType, required: required },
+          ]),
+          setAttributeName(""),
+          setSelectedType(""),
+          setOptions([]),
+          setRequired(false));
+    } else {
+      alert("Attribute name and type can't be Empty!");
+    }
   };
 
   const handleCreate = () => {
-    console.log(form);
+    form.length !== 0 ? console.log(form) : alert("Form is Empty!");
   };
 
   return (
@@ -99,6 +119,7 @@ export default function () {
                 <option value="checkbox">Check Box</option>
                 <option value="Radio">Radio Buttons</option>
                 <option value="select">Drop down</option>
+                <option value="number">Number</option>
               </select>
             </div>
           </div>
@@ -118,13 +139,29 @@ export default function () {
               <button
                 style={styles.Buttons}
                 onClick={() => {
-                  setOptions([...options, optionName]), setOptionName("");
+                  optionName
+                    ? (setOptions([...options, optionName]), setOptionName(""))
+                    : alert("Option name is Empty!");
                 }}
               >
                 Add Option
               </button>
             </div>
           )}
+          <div key="required" style={styles.Box}>
+            <div>required</div>
+            <input
+              type="checkbox"
+              checked={required}
+              onChange={
+                required
+                  ? () => setRequired(false)
+                  : () => {
+                      setRequired(true);
+                    }
+              }
+            />
+          </div>
           <div>
             <button style={styles.Buttons} onClick={handleAdd}>
               Add Attribute
@@ -140,52 +177,67 @@ export default function () {
               <div key={item.name}>
                 <h2>{item.name}</h2>
               </div>
-            ) : item.type === "checkbox" ||
-              item.type === "radio" ||
-              item.type === "select" ||
-              item.type === "date range" ? (
-              item.type === "select" ? (
-                <div key={item.name} style={styles.Box}>
-                  <div>{item.name}</div>
-                  <div style={styles.SelectWrapper}>
-                    <select style={styles.Select}>
-                      <option key="0"></option>
-                      {item.options.map((item) => (
-                        <option key={item}>{item}</option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-              ) : item.type === "checkbox" ? (
-                <div key={item.name} style={styles.Box}>
-                  <div>{item.name}</div>
-                  {item.options.map((option) => (
-                    <div key={option}>
-                      <input type="checkbox" name={option} id={option} />
-                      <label> {option}</label>
-                    </div>
-                  ))}
-                </div>
-              ) : item.type === "date range" ? (
-                <div style={styles.Box}>
-                  <div>{item.name}</div>
-                  <div>
-                    Start:
-                    <input style={styles.RangeInput} type="date" />
-                    End:
-                    <input style={styles.RangeInput} type="date" />
-                  </div>
-                </div>
-              ) : (
-                item.type === "radio" && <div></div>
-              )
-            ) : (
+            ) : item.type === "select" ? (
               <div key={item.name} style={styles.Box}>
-                <div>{item.name}</div>
-                <div style={styles.InputWrapper}>
-                  <input style={styles.Input} type={item.type} />
+                <div>
+                  {item.name} {item.required && <span>*</span>}
+                </div>
+                <div style={styles.SelectWrapper}>
+                  <select style={styles.Select}>
+                    <option key="0"></option>
+                    {item.options.map((item) => (
+                      <option key={item}>{item}</option>
+                    ))}
+                  </select>
                 </div>
               </div>
+            ) : item.type === "checkbox" ? (
+              <div key={item.name} style={styles.Box}>
+                <div>
+                  {item.name} {item.required && <span>*</span>}
+                </div>
+                {item.options.map((option) => (
+                  <div key={option}>
+                    <input type="checkbox" name={option} id={option} />
+                    <label> {option}</label>
+                  </div>
+                ))}
+              </div>
+            ) : item.type === "date range" ? (
+              <div style={styles.Box}>
+                <div>
+                  {item.name} {item.required && <span>*</span>}
+                </div>
+                <div>
+                  Start:
+                  <input style={styles.RangeInput} type="date" />
+                  End:
+                  <input style={styles.RangeInput} type="date" />
+                </div>
+              </div>
+            ) : item.type === "Radio" ? (
+              <div key={item.name} style={styles.Box}>
+                <div>
+                  {item.name} {item.required && <span>*</span>}
+                </div>
+                <div style={styles.InputWrapper}>
+                  {item.options.map((option) => (
+                    <>
+                      <input type="radio" name={item.name} value={option} />
+                      {option}
+                    </>
+                  ))}
+                </div>
+              </div>
+            ) : (
+                <div key={item.name} style={styles.Box}>
+                  <div>
+                    {item.name} {item.required && <span>*</span>}
+                  </div>
+                  <div style={styles.InputWrapper}>
+                    <input style={styles.Input} type={item.type} />
+                  </div>
+                </div>
             )
           )}
           <button style={styles.Buttons} onClick={handleCreate}>
