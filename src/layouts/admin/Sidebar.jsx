@@ -54,7 +54,7 @@ export default function Sidebar(){
             </div>
             <div style={styles.Divider}></div>
             <div style={styles.Item}>
-                <Link style={styles.Link} to="/clubs">Clubs</Link>
+                <Link style={styles.Link} to="/home/clubs">Clubs</Link>
             </div>
             <div style={styles.divider}></div>
             <div style={styles.Item}>
