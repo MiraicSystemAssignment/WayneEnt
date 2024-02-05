@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const styles = {
   clubsContainerWrapper: {
@@ -55,10 +56,12 @@ const styles = {
 
 export const Clubs = () => {
   const [clubs, setClubs] = useState([]);
+  const [ids, setIds] = useState([]);
+  const navigate = useNavigate();
   useEffect(()=>{
     const getClubs = () =>{
       axios.get('http://localhost:8080/clubs')
-      .then(({data})=>{setClubs(data.map(club=>(JSON.parse(club.form_data).find(item=>item.type==='form name').name)))}).catch(err=>console.log(err));
+      .then(({data})=>{setIds(data.map(item=>(item.id))), setClubs(data.map(club=>(JSON.parse(club.form_data).find(item=>item.type==='form name').name)))}).catch(err=>console.log(err));
     }
     getClubs();
   },[])
@@ -77,6 +80,7 @@ export const Clubs = () => {
           key={club}
           id={index}
           style={styles.clubsContainer}
+          onClick={()=>navigate(`/home/clubs/${ids[index]}`)}
           onMouseEnter={() => handleHover(index)}
           onMouseLeave={() => handleLeave(index)}
         >

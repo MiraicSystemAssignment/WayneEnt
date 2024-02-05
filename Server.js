@@ -61,10 +61,11 @@ app.get('/club/:id', (req, res)=>{
 })
 
 app.post('/create/:clubid', (req, res)=>{
+  const form = req.body.form;
   const formData = req.body.formData;
   connection.query(`create table if not exists group${req.params.clubid}(
-    id INT primary key auto_increment,
-    ${formData.map((item, index)=>(`key${index} VARCHAR (40)`)).join(',')}
+    id INT primary key auto_increment
+    ${form.map((item, index)=>(index!==0 ? `${item.name} VARCHAR (40)` : null)).join(',')}
   );`, (err, result)=>{
     if(err){
       res.send(err);
@@ -74,9 +75,10 @@ app.post('/create/:clubid', (req, res)=>{
   });
 })
 app.post('/insert/:clubid', (req, res)=>{
+  const form = req.body.form;
   const formData = req.body.formData;
-  connection.query(`INSERT INTO group${req.params.clubid} (${formData.map((item,index)=>(`key${index}`)).join(',')}) 
-  VALUES (${formData.map(item=>`?`).join(',')});`,formData.map(item=> (typeof item) === "object" ? JSON.stringify(item) : item), (err, result)=>{
+  connection.query(`INSERT INTO group${req.params.clubid} (${form.map((item,index)=>(index!==0 ? `${item.name}` : null)).join(',').slice(1)}) 
+  VALUES (${formData.map((item,index)=>(index!==0 ? `?` : null)).join(',').slice(1)});`,formData.map((item, index)=> ((typeof item) === "object" ? JSON.stringify(item) : item)).slice(1), (err, result)=>{
     if(err){
       res.send(err);
     }else if(result){
@@ -84,6 +86,16 @@ app.post('/insert/:clubid', (req, res)=>{
     }
   });
 });
+
+app.get('/clubdata/:id', (req,res)=>{
+  connection.query(`SELECT * FROM group${req.params.id}` ,(err, result)=>{
+    if (err){
+      res.send(err);
+    }else if(result){
+      res.send(result);
+    }
+  })
+})
 const PORT = 8080;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

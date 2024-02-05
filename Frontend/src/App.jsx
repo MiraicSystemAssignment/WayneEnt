@@ -18,7 +18,7 @@ function App() {
       <Route path="/home" Component={mainLayout}>
         <Route index path="/home/new" Component={NewClub}/>
         <Route path="/home/clubs" Component={Clubs} />
-        <Route path="/home/clubs/view" Component={ClubsView} />
+        <Route path="/home/clubs/:id" Component={ClubsView} />
       </Route>
       <Route path="member" Component={Membership} />
       <Route path="/Events" Component={Events} />

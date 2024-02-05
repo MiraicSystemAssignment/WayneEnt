@@ -129,7 +129,7 @@ const Eventform = () => {
       try {
         const response1 = await axios.post(
           `http://localhost:8080/create${id}`,
-          { formData: formData }, // 'form' is my data
+          { formData: formData, form: form }, // 'form' is my data
           { headers: { "Content-Type": "application/json" } } 
         );
         console.log(response1);
@@ -139,7 +139,7 @@ const Eventform = () => {
       try {
         const response2 = await axios.post(
           `http://localhost:8080/insert${id}`,
-          { formData: formData }, // 'form' is my data
+          { formData: formData, form: form }, // 'form' is my data
           { headers: { "Content-Type": "application/json" } } 
         );
         console.log(response2);
