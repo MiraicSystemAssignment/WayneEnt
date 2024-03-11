@@ -11,7 +11,7 @@ const styles = {
         display: "flex",
         flexDirection: "column",
         minHeight: "10vh",
-        minWidth: "30%",
+        minWidth: "25%",
         backgroundColor: "black",
         color: "white",
         fontFamily: "poppins",
@@ -19,11 +19,12 @@ const styles = {
         alignItems: "center"
     },
     Item: {
-      width: "100%",
+      width: "99%",
       textAlign: "center",
       backgroundColor: 'white',
       color: 'black',
-      marginBottom: "2%"
+      marginBottom: "2%",
+      border: "solid black 0.1rem"
     },
     Items: {
       width: "100%",

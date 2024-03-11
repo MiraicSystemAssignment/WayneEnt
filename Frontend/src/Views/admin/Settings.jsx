@@ -35,7 +35,8 @@ const styles = {
   },
   Buttons: {
     margin: "0",
-    padding: "0.15rem",
+    paddingLeft: "0.35rem",
+    paddingRight: "0.35rem",
     border: "none",
     color: "white",
     backgroundColor: "#0E050F",
@@ -47,6 +48,7 @@ const styles = {
     width: "15rem",
     height: "1rem",
     marginRight: "0.5rem",
+    marginLeft: "0.5rem",
   },
 };
 export default function Settings() {
@@ -87,11 +89,20 @@ export default function Settings() {
     setUrls(uris);
   };
 
-  const setActive = () => {
+  const setNext = () => {
     const input = document.getElementById("urlInput");
-    input.value = "";
     let active = activeUrl + 1;
     setActiveUrl(active);
+    input.value = urls[active] === undefined ? "" : urls[active];
+  };
+
+  const setPrev = () => {
+    const input = document.getElementById("urlInput");
+    if(activeUrl>0){
+      let active = activeUrl - 1;
+      setActiveUrl(active);
+      input.value = urls[active];
+    }
   };
 
   useEffect(() => {
@@ -144,14 +155,17 @@ export default function Settings() {
             <label style={styles.heading}>Area {activeUrl + 1}'s url</label>
           </div>
           <div style={styles.element}>
+            <button style={styles.Buttons} onClick={setPrev}>
+              prev
+            </button>
             <input
               style={styles.input}
               id="urlInput"
               type="text"
               onChange={(e) => setUrlFunc(e.target.value)}
             />
-            <button style={styles.Buttons} onClick={setActive}>
-              Set Link
+            <button style={styles.Buttons} onClick={setNext}>
+              next
             </button>
           </div>
         </div>
