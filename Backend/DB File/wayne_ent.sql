@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 25, 2024 at 07:54 AM
+-- Generation Time: Mar 27, 2024 at 06:58 AM
 -- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- PHP Version: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -37,8 +37,9 @@ CREATE TABLE `clubs` (
 --
 
 INSERT INTO `clubs` (`id`, `form_data`) VALUES
-(1, '[{\"name\":\"name\",\"type\":\"form name\",\"required\":true},{\"name\":\"Biker\",\"type\":\"text\",\"required\":true}]'),
-(2, '[{\"name\":\"Bikers Club\",\"type\":\"form name\",\"required\":true},{\"name\":\"Bike Name\",\"type\":\"text\",\"required\":true},{\"name\":\"Phone\",\"type\":\"number\",\"required\":true},{\"name\":\"Type\",\"type\":\"select\",\"options\":[\"2 Stroke \"],\"required\":true},{\"name\":\"event\",\"type\":\"date range\",\"required\":true},{\"name\":\"Rider Skills\",\"type\":\"checkbox\",\"options\":[\"Weeling\"],\"required\":true},{\"name\":\"Gender\",\"type\":\"Radio\",\"options\":[\"Male\",\"Female\"],\"required\":false},{\"name\":\"date\",\"type\":\"date\",\"required\":true}]');
+(40, '[{\"name\":\"test1\",\"type\":\"form name\",\"required\":false},{\"name\":\"name\",\"type\":\"text\",\"required\":false}]'),
+(41, '[{\"name\":\"bikers\",\"type\":\"form name\",\"required\":false},{\"name\":\"name\",\"type\":\"text\",\"required\":true},{\"name\":\"mail\",\"type\":\"email\",\"required\":true},{\"name\":\"address\",\"type\":\"text\",\"required\":true},{\"name\":\"event\",\"type\":\"date range\",\"required\":false},{\"name\":\"gender\",\"type\":\"Radio\",\"options\":[\"male\",\"female\"],\"required\":true}]'),
+(42, '[{\"name\":\"cosplay\",\"type\":\"form name\",\"required\":false},{\"name\":\"name\",\"type\":\"text\",\"required\":true},{\"name\":\"event\",\"type\":\"date\",\"required\":false}]');
 
 -- --------------------------------------------------------
 
@@ -50,6 +51,65 @@ CREATE TABLE `container` (
   `id` int(5) NOT NULL,
   `forms` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `group40`
+--
+
+CREATE TABLE `group40` (
+  `Line_id` varchar(35) NOT NULL,
+  `name` varchar(40) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `group40`
+--
+
+INSERT INTO `group40` (`Line_id`, `name`) VALUES
+('U8a41781a5f7c0847792703a2a71dc8a6', 'saru');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `group41`
+--
+
+CREATE TABLE `group41` (
+  `Line_id` varchar(35) NOT NULL,
+  `name` varchar(40) DEFAULT NULL,
+  `mail` varchar(40) DEFAULT NULL,
+  `address` varchar(40) DEFAULT NULL,
+  `event` varchar(40) DEFAULT NULL,
+  `gender` varchar(40) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `group41`
+--
+
+INSERT INTO `group41` (`Line_id`, `name`, `mail`, `address`, `event`, `gender`) VALUES
+('U8a41781a5f7c0847792703a2a71dc8a6', '\"kk\"', '\"kk\"', '\"looo\"', '{\"Start\":\"2024-03-30\",\"End\":\"2024-03-23\"', '\"female\"');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `group42`
+--
+
+CREATE TABLE `group42` (
+  `Line_id` varchar(35) NOT NULL,
+  `name` varchar(40) DEFAULT NULL,
+  `event` varchar(40) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `group42`
+--
+
+INSERT INTO `group42` (`Line_id`, `name`, `event`) VALUES
+('U8a41781a5f7c0847792703a2a71dc8a6', 'saru', '2024-03-01');
 
 --
 -- Indexes for dumped tables
@@ -68,6 +128,24 @@ ALTER TABLE `container`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `group40`
+--
+ALTER TABLE `group40`
+  ADD PRIMARY KEY (`Line_id`);
+
+--
+-- Indexes for table `group41`
+--
+ALTER TABLE `group41`
+  ADD PRIMARY KEY (`Line_id`);
+
+--
+-- Indexes for table `group42`
+--
+ALTER TABLE `group42`
+  ADD PRIMARY KEY (`Line_id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -75,7 +153,7 @@ ALTER TABLE `container`
 -- AUTO_INCREMENT for table `clubs`
 --
 ALTER TABLE `clubs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 
 --
 -- AUTO_INCREMENT for table `container`
