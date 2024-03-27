@@ -63,16 +63,16 @@ export default function Settings() {
     ((areas > 20))
       ? alert("Data provided is Invalid")
       : await axios
-          .post(`http://localhost:8080/richmenu1/${selectedImage}`, { uris: urls })
+          .post(`http://localhost:8080/api/richmenu1/${selectedImage}`, { uris: urls })
           .then(({ data }) =>
             axios
-              .post(`http://localhost:8080/richmenu2/${areas}`, {
+              .post(`http://localhost:8080/api/richmenu2/${areas}`, {
                 menuId: data.richMenuId,
                 imageName: selectedImage,
               })
               .then((response) =>
                 axios
-                  .post("http://localhost:8080/richmenu3", {
+                  .post("http://localhost:8080/api/richmenu3", {
                     menuId: data.richMenuId,
                   })
                   .then(({data}) => console.log(data), alert('Richmenu Updated Successfully!'), setAreas(0), setUrls([]), setActiveUrl(0), setImages([]), setSelectedImage(1))
@@ -108,7 +108,7 @@ export default function Settings() {
   useEffect(() => {
     console.log(selectedImage);
     axios
-      .get(`http://localhost:8080/images/${areas}`)
+      .get(`http://localhost:8080/api/images/${areas}`)
       .then(({ data }) => setImages(data))
       .catch((err) => console.log(err));
   }, [areas]);

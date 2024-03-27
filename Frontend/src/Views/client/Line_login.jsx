@@ -3,6 +3,7 @@ import axios from 'axios';
 import qs from 'qs';
 import Events from './Events';
 import Cards from "./Card";
+import Eventform from "./Eventform";
 
 const Line_login = () => {
   const [userProfile, setUserProfile] = useState(null);
@@ -52,6 +53,7 @@ const Line_login = () => {
           <div>
             <Events userProfile={userProfile} />
             <Cards user={userProfile} />
+            <Eventform user={userProfile} />
           </div>
         }
       } catch (error) {

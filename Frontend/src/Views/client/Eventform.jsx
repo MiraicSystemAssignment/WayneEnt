@@ -57,13 +57,25 @@ const Eventform = () => {
   const id = window.location.pathname;
   const [form, setForm] = useState([]);
   const [formData, setFormData] = useState([]);
+  const [userProfileJson, setUserProfileJson] = useState(null); 
+
+  const displayUserProfile = () => {
+    const storedUserProfile = localStorage.getItem('userProfile');
+    if (storedUserProfile) {
+      setUserProfileJson(JSON.stringify(JSON.parse(storedUserProfile), null, 2));
+    }
+  };
+  useEffect(() => {
+    displayUserProfile();
+  }, []);
 
   useEffect(() => {
     const getClub = async () => {
       await axios
-        .get(`http://localhost:8080/club${id}`)
+        .get(`http://localhost:8080/api/club${id}`)
         .then(({ data }) => setForm(JSON.parse(data[0].form_data)))
         .catch((err) => console.log(err));
+        console.log(userProfileJson);
     };
     getClub();
   }, []);
@@ -133,7 +145,7 @@ const Eventform = () => {
       console.log(formData);
       try {
         const response1 = await axios.post(
-          `http://localhost:8080/create${id}`,
+          `http://localhost:8080/api/create${id}`,
           { formData: formData, form: form },
           { headers: { "Content-Type": "application/json" } }
         );
@@ -141,8 +153,8 @@ const Eventform = () => {
         
         try {
           const response2 = await axios.post(
-            `http://localhost:8080/insert${id}`,
-            { formData: formData, form: form },
+            `http://localhost:8080/api/insert${id}`,
+            { formData: formData, form: form, user: userProfileJson },
             { headers: { "Content-Type": "application/json" } }
           );
           console.log(response2);

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from "axios";
+import { BsChatDotsFill } from "react-icons/bs";
 
 const styles = {
     table: {
@@ -14,13 +15,14 @@ const styles = {
       th: {
         border: '1px solid #ddd',
         padding: '8px',
-        textAlign: 'left',
+        textAlign: 'center',
         backgroundColor: '#f2f2f2',
         color: '#333',
         fontWeight: 'bold',
         fontSize: '14px',
       },
       td: {
+        textAlign: 'center',
         border: '1px solid #ddd',
         padding: '8px',
         color: '#666',
@@ -33,7 +35,7 @@ const ClubsView = () => {
   const [data, setData] = useState([]);
   useEffect(()=>{
     const getData = async () =>{
-      await axios.get(`http://localhost:8080/clubdata${id.slice(11)}`).then(({data})=>setData(data)).catch(err=>console.log(err));
+      await axios.get(`http://localhost:8080/api/clubdata${id.slice(11)}`).then(({data})=>setData(data)).catch(err=>console.log(err));
     }
     getData();
     console.log(data)
@@ -46,6 +48,7 @@ const ClubsView = () => {
           {Object.keys(data[0]).map(item=>(
             <th style={styles.th}>{item}</th>
           ))}
+          <th style={styles.th}>chat</th>
         </tr>
       </thead>
       <tbody>
@@ -56,9 +59,14 @@ const ClubsView = () => {
                 <td style={styles.td}>{(typeof item === 'string' && item.substring(0,1) === '{') 
                 ? (JSON.parse(item+'}').Start + ' To ' + JSON.parse(item+'}').End) 
                 : (typeof item === 'string' && item.substring(0,1) === '[') 
-                ? JSON.parse(item).map((e,i)=>(e!=='' ? e+',' : null)) : item} </td>
+                ? JSON.parse(item).map((e,i)=>(e!=='' ? e+',' : null))
+                : (typeof item === 'string' && item.substring(0,1) === '"') 
+                ? JSON.parse(item) : item} </td>
               ))
             }
+            <td style={styles.td}>
+              <span style={{cursor: "pointer"}} onClick={()=>alert("chats")}>{<BsChatDotsFill />}</span>
+            </td>
           </tr>
         ))}
       </tbody>

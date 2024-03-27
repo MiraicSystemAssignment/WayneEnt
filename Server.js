@@ -5,21 +5,13 @@ import cors from 'cors';
 import axios from 'axios';
 import fs from 'fs';
 import path from 'path';
-import qs from 'qs';
 global.__dirname = path.resolve();
 import * as menuBounds from './Richmenus/menubounds.js';
 dotenv.config();
 
-const corsOptions = {
-  allowedHeaders: ['Origin', 'Content-Type', 'Accept', 'X-Access-Token', 'Authorization'], 
-  origin: ['http://localhost:5173'],
-  methods: 'GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE',
-  preflightContinue: false,
-  optionsSuccessStatus: 204
-}
 const app = express();
 app.use(express.json());
-app.use(cors(corsOptions)); // CORS to enable run our backend in other ports also
+app.use(cors()); // CORS to enable run our backend in other ports also
 
 const connection = mysql.createConnection({
   host: process.env.DB_HOST,
@@ -36,8 +28,16 @@ connection.connect((err) => {
     console.log('Connected to the database!');
   }
 });
+app.use(express.static(path.join(__dirname, "Frontend", "dist")));
+app.get(/^\/(?!api).*/, (req, res) => {
+  res.sendFile(path.join(__dirname, 'Frontend', 'dist', 'index.html'), function (err) {
+    if (err) {
+      res.status(500).send(err);
+    }
+  });
+});
 
-app.post('/wayne_ent', (req, res) => {
+app.post('/api/wayne_ent', (req, res) => {
   const formData = req.body.formData;
 
   const sql = 'INSERT INTO clubs (form_data) VALUES (?)';
@@ -53,7 +53,7 @@ app.post('/wayne_ent', (req, res) => {
   });
 });
 
-app.get('/clubs', (req, res)=>{
+app.get('/api/clubs', (req, res)=>{
    connection.query('SELECT * from clubs', (err, result)=>{
     if(err){
       res.send(err);
@@ -62,7 +62,7 @@ app.get('/clubs', (req, res)=>{
     }})
 })
 
-app.get('/club/:id', (req, res)=>{
+app.get('/api/club/:id', (req, res)=>{
   connection.query(`SELECT * from clubs where id =(?)`,[req.params.id], (err, result)=>{
     if(err){
       res.send(err);
@@ -72,7 +72,7 @@ app.get('/club/:id', (req, res)=>{
   })
 })
 
-app.get('/user/:id/:line', (req,res)=>{
+app.get('/api/user/:id/:line', (req,res)=>{
   const userId = req.params.line;
   connection.query(`SELECT * FROM group${req.params.id} where Line_id ='${userId}'`, (err, result)=>{
     if(err){
@@ -83,26 +83,29 @@ app.get('/user/:id/:line', (req,res)=>{
   })
 });
 
-app.post('/create/:clubid', (req, res)=>{
+app.post('/api/create/:clubid', (req, res)=>{
   const form = req.body.form;
   const formData = req.body.formData;
   connection.query(`create table if not exists group${req.params.clubid}(
-    id INT primary key auto_increment
+    Line_id VARCHAR(35) primary key
     ${form.map((item, index)=>(index!==0 ? `${item.name.replace(/\s/g, '_')} VARCHAR (40)` : null)).join(',')}
   );`, (err, result)=>{
     if(err){
+      console.log(err);
       res.send(err);
     }else if(result){
       res.send(result);
     }
   });
 })
-app.post('/insert/:clubid', (req, res)=>{
+app.post('/api/insert/:clubid', (req, res)=>{
   const form = req.body.form;
   const formData = req.body.formData;
-  connection.query(`INSERT INTO group${req.params.clubid} (${form.map((item,index)=>(index!==0 ? `${item.name.replace(/\s/g, '_')}` : null)).join(',').slice(1)}) 
-  VALUES (${formData.map((item,index)=>(index!==0 ? `?` : null)).join(',').slice(1)});`,formData.map((item, index)=> ((typeof item) === "object" ? JSON.stringify(item) : item)).slice(1), (err, result)=>{
+  console.log(formData);
+  connection.query(`INSERT INTO group${req.params.clubid} (${form.map((item,index)=>(index!==0 ? `${item.name.replace(/\s/g, '_')}` : `Line_id`)).join(',')}) 
+  VALUES (${[JSON.stringify(JSON.parse(req.body.user).userId), formData.map((item, index)=> (((typeof item) === "string" ) ? JSON.stringify(item) : (typeof item) === "object") ? `'${JSON.stringify(item)}'` : item).slice(1).join(',')]});`, (err, result)=>{
     if(err){
+      console.log(err);
       res.send(err);
     }else if(result){
       res.send(result);
@@ -110,7 +113,7 @@ app.post('/insert/:clubid', (req, res)=>{
   });
 });
 
-app.get('/clubdata/:id', (req,res)=>{
+app.get('/api/clubdata/:id', (req,res)=>{
   connection.query(`SELECT * FROM group${req.params.id}` ,(err, result)=>{
     if (err){
       res.send(err);
@@ -120,7 +123,7 @@ app.get('/clubdata/:id', (req,res)=>{
   })
 })
 
-app.post('/richmenu1/:type', (req,res)=>{
+app.post('/api/richmenu1/:type', (req,res)=>{
   const type = req.params.type;
   const urls = req.body.uris;
   const config = {
@@ -165,7 +168,7 @@ app.post('/richmenu1/:type', (req,res)=>{
     });
 })
 
-app.post('/richmenu2/:id', (req,res)=>{
+app.post('/api/richmenu2/:id', (req,res)=>{
   const richMenuId = req.body.menuId;
   const imageName = req.body.imageName;
   const imageUrl = `./Frontend/public/Images/Areas-${req.params.id}/type-${imageName}.jpeg`;
@@ -188,7 +191,7 @@ app.post('/richmenu2/:id', (req,res)=>{
   });
 })
 
-app.post('/richmenu3', (req,res)=>{
+app.post('/api/richmenu3', (req,res)=>{
   const richMenuId = req.body.menuId;
   const channelAccessToken = 'WYpFxegG/Aj/UprPcZ7eon/b+OgKPRdxc5hrcypBYzymBoh23Xt7ESVfL8oBuND8C6q08aNrLmtTwBMMcMJ717BfIjtRP6cwMPWs1SeDi4OP7eXn1Cf2lxF9X7i8qbWgTWxwgTm275Ojt8gxy7eVGQdB04t89/1O/w1cDnyilFU';
 
@@ -207,7 +210,7 @@ axios.post(url, null, { headers })
   });
 });
 
-app.get('/images/:id', (req,res)=>{
+app.get('/api/images/:id', (req,res)=>{
   fs.readdir(path.join(__dirname, `/Frontend/public/Images/Areas-${req.params.id}`), (err, files)=>{
     if(err){
       res.send(err);
