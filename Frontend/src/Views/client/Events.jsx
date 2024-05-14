@@ -10,7 +10,7 @@ const Events = () => {
 
   useEffect(() => {
     const getClubs = () => {
-      axios.get('http://localhost:8080/api/clubs')
+      axios.get(`https://wayne.di-devs.com/api/clubs`)
         .then(({ data }) => {
           setClubIds(data.map(item => item.id));
           setClubs(data.map(club => (JSON.parse(club.form_data).find(item => item.type === 'form name').name)));
@@ -34,8 +34,8 @@ const Events = () => {
 
   const handleClubClick = (index) =>{
     if(userProfileJson){
-      axios.get(`http://localhost:8080/api/user/${clubIds[index]}/${JSON.parse(userProfileJson).userId}`)
-    .then(({data})=> data ? navigate(`/Card/${clubs[index]}`) : navigate(`/${clubIds[index]}`)).catch(err=> console.log(err));
+      axios.get(`https://wayne.di-devs.com/api/user/${clubIds[index]}/${JSON.parse(userProfileJson).userId}`)
+    .then(({data})=> data.find(item => item.Line_id === JSON.parse(userProfileJson).userId) ? navigate(`/Card/${clubs[index]}`) : navigate(`/${clubIds[index]}`)).catch(err=> console.log(err));
   }else{
     alert('Please Login First');
   }

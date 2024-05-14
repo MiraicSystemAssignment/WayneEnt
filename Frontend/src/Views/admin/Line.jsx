@@ -47,7 +47,7 @@ const Line = (props) => {
   useEffect(() => {
     const getMessages = async () =>{
       try {
-        const { data } = await axios.post(`https://4e51-2a09-bac1-36a0-68-00-31-10d.ngrok-free.app/api/messages`, {id: props.lineUserId});
+        const { data } = await axios.post(`https://d40c-2a09-bac1-3680-68-00-31-85.ngrok-free.app/api/messages`, {id: props.lineUserId});
         if(data.length > 0) {
           setMessages(JSON.parse(data[0].texts));
         }
@@ -61,7 +61,7 @@ const Line = (props) => {
   const handleSendMessage = async () => {
     try {
       const response = await axios.post(
-        'https://4e51-2a09-bac1-36a0-68-00-31-10d.ngrok-free.app/api/send-message',
+        'https://d40c-2a09-bac1-3680-68-00-31-85.ngrok-free.app/api/send-message',
         {
           to: props.lineUserId,
           events: [

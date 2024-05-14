@@ -67,11 +67,11 @@ app.get('/api/club/:id', (req, res)=>{
 
 app.get('/api/user/:id/:line', (req,res)=>{
   const userId = req.params.line;
-  connection.query(`SELECT * FROM group${req.params.id} where Line_id ='${userId}'`, (err, result)=>{
+  connection.query(`SELECT * FROM group${req.params.id}`, (err, result)=>{
     if(err){
       res.send(false);
     }else if(result){
-      res.send(true);
+      res.send(result);
     }
   })
 });

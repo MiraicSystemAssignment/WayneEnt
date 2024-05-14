@@ -72,7 +72,7 @@ const Eventform = () => {
   useEffect(() => {
     const getClub = async () => {
       await axios
-        .get(`http://localhost:8080/api/club${id}`)
+        .get(`https://wayne.di-devs.com/api/club${id}`)
         .then(({ data }) => setForm(JSON.parse(data[0].form_data)))
         .catch((err) => console.log(err));
         console.log(userProfileJson);
@@ -145,7 +145,7 @@ const Eventform = () => {
       console.log(formData);
       try {
         const response1 = await axios.post(
-          `http://localhost:8080/api/create${id}`,
+          `https://wayne.di-devs.com/api/create${id}`,
           { formData: formData, form: form },
           { headers: { "Content-Type": "application/json" } }
         );
@@ -153,7 +153,7 @@ const Eventform = () => {
         
         try {
           const response2 = await axios.post(
-            `http://localhost:8080/api/insert${id}`,
+            `https://wayne.di-devs.com/api/insert${id}`,
             { formData: formData, form: form, user: userProfileJson },
             { headers: { "Content-Type": "application/json" } }
           );

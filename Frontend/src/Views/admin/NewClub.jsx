@@ -102,7 +102,7 @@ export default function () {
     }else{
       try {
         const response = await axios.post(
-          "http://localhost:8080/api/wayne_ent",
+          `https://wayne.di-devs.com/api/wayne_ent`,
           { formData: form }, // 'form' is my data
           { headers: { "Content-Type": "application/json" } } 
         );

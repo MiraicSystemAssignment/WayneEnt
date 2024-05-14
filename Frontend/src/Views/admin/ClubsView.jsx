@@ -121,7 +121,7 @@ const ClubsView = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/api/clubdata${id.slice(11)}`);
+        const response = await axios.get(`https://wayne.di-devs.com/api/clubdata${id.slice(11)}`);
         setData(response.data);
       } catch (error) {
         console.log(error);

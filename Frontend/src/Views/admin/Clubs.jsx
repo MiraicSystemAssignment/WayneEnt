@@ -60,7 +60,7 @@ export const Clubs = () => {
   const navigate = useNavigate();
   useEffect(()=>{
     const getClubs = () =>{
-      axios.get('http://localhost:8080/api/clubs')
+      axios.get(`https://wayne.di-devs.com/api/clubs`)
       .then(({data})=>{setIds(data.map(item=>(item.id))), setClubs(data.map(club=>(JSON.parse(club.form_data).find(item=>item.type==='form name').name)))}).catch(err=>console.log(err));
     }
     getClubs();
